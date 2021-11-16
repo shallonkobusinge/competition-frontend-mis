@@ -7,6 +7,7 @@ import BASE_URL from '../utils/baseUrl'
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { getAllStudents } from '../services/students'
+import authHeader from '../services/authHeader'
 const RegisterMarks = ({ showFormView }) => {
 
     const initialMarksObject = {
@@ -24,7 +25,7 @@ const RegisterMarks = ({ showFormView }) => {
         totalMarks: "",
         totalFullMarks: "",
         averageMarks: "",
-        percentage: "",
+        percentage: ""
 
     };
 
@@ -44,9 +45,59 @@ const RegisterMarks = ({ showFormView }) => {
         , [])
 
     const inputHandler = (e) => {
+
         var name = e.target.name;
         var value = e.target.value;
         setmarksData({ ...marksData, [name]: value });
+        console.log('agin', marksData.frenchMarks)
+        const marksDataTotals = (parseInt(marksData.englishMarks) + parseInt(marksData.frenchMarks) +
+            parseInt(marksData.kinyarwandaMarks) + parseInt(marksData.socialMarks) + parseInt(marksData.mathMarks));
+
+        console.log('1', (parseInt(marksData.englishMarks)));
+        console.log('2', ((marksData.frenchMarks)));
+        console.log('3', (parseInt(marksData.kinyarwandaMarks)));
+        console.log('4', (parseInt(marksData.socialMarks)));
+        console.log('5', (parseInt(marksData.mathMarks)));
+        console.log('6', (parseInt(marksData.totalMarks)));
+
+        console.log('sdjfadfsa', (parseInt(marksData.englishMarks) + parseInt(marksData.frenchMarks) +
+            parseInt(marksData.kinyarwandaMarks) + parseInt(marksData.socialMarks) + parseInt(marksData.mathMarks)))
+
+
+        const marksDataFullTotals = (parseInt(marksData.totalEnglishMarks) + parseInt(marksData.totalFrenchMarks) +
+            parseInt(marksData.totalKinyarwandaMarks) + parseInt(marksData.totalMathMarks) + parseInt(marksData.totalSocialMarks))
+        // console.log(marksData)
+        // console.log(marksDataTotals, marksDataFullTotals)
+        // console.log(marksDataTotals + marksDataFullTotals / 5)
+        console.log(marksData?.englishMarks !== "" && marksData?.frenchMarks !== "" && marksData?.kinyarwandaMarks !== "" &&
+            marksData?.mathMarks !== "" && marksData?.socialMarks !== "")
+        console.log(marksData?.totalEnglishMarks !== "" && marksData?.totalFrenchMarks !== "" && marksData?.totalKinyarwandaMarks !== ""
+            && marksData?.totalMathMarks !== "" && marksData?.totalSocialMarks !== "")
+
+        if (marksData?.englishMarks !== "" && marksData?.frenchMarks !== "" && marksData?.kinyarwandaMarks !== "" &&
+            marksData?.mathMarks !== "" && marksData?.socialMarks !== "") {
+            console.log('working', marksDataTotals)
+            setmarksData({
+                ...marksData, "totalMarks": marksDataTotals
+            })
+            setmarksData({
+                ...marksData, "averageMarks": (marksDataTotals) / 5
+            })
+            setIstotalMakrsEmpty(true)
+        }
+        if (marksData?.totalEnglishMarks !== "" && marksData?.totalFrenchMarks !== "" && marksData?.totalKinyarwandaMarks !== ""
+            && marksData?.totalMathMarks !== "" && marksData?.totalSocialMarks !== "") {
+            setmarksData({
+                ...marksData, "totalFullMarks": marksDataFullTotals
+            });
+            setIstotalFullMakrsEmpty(true)
+        }
+        console.log(isTotalMarksEmpty === true && isTotalFullMarksEmpty === true)
+        if (isTotalMarksEmpty === true && isTotalFullMarksEmpty === true) {
+            setmarksData({ ...marksData, "percentage": (marksDataTotals + marksDataFullTotals / 5) * 100 })
+
+        }
+        // console.log(marksData)
     };
     const selectHandler = (payload) => {
         var name = payload.name;
@@ -57,34 +108,16 @@ const RegisterMarks = ({ showFormView }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const marksDataTotals = (parseInt(marksData?.englishMarks) + parseInt(marksData?.frenchMarks) +
-            parseInt(marksData?.kinyarwandaMarks) + parseInt(marksData?.socialMarks) + parseInt(marksData?.mathMarks))
+
         console.log(marksData)
 
-        if (marksData?.englishMarks !== "" && marksData?.frenchMarks !== "" && marksData?.kinyarwandaMarks !== "" &&
-            marksData?.mathMarks !== "" && marksData?.socialMarks !== "") {
-            setmarksData({
-                ...marksData, "totalMarks": marksDataTotals
+        axios.post(`${BASE_URL}/marks`, marksData, { headers: authHeader() })
+            .then((response) => {
+                toast.success(" Marks Added Successfully")
             })
-            setmarksData({
-                ...marksData, "averageMarks": (marksDataTotals) / 5
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
             })
-            setIstotalFullMakrsEmpty(true)
-        }
-        if (marksData?.totalEnglishMarks !== "" && marksData?.totalFrenchMarks !== "" && marksData?.totalKinyarwandaMarks !== ""
-            && marksData?.totalMathMarks !== "" && marksData?.totalSocialMarks !== "") {
-            setmarksData({
-                ...marksData, "totalFullMakrs": parseInt(marksData?.totalEnglishMarks) + parseInt(marksData?.totalFrenchMarks) +
-                    parseInt(marksData?.totalKinyarwandaMarks) + parseInt(marksData?.totalMathMarks) + parseInt(marksData?.totalSocialMarks)
-            });
-            setIstotalFullMakrsEmpty(true)
-        }
-        if (isTotalFullMarksEmpty === true && isTotalFullMarksEmpty === true) {
-            // setmarksData({ ...marksData, "percentage": })
-
-        }
-
-        // axios.post(`${BASE_URL}/marks`)
 
     };
 
@@ -109,7 +142,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="mathMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Student Math Marks"
                                 placeholder="Math Marks"
                                 className="login-input"
@@ -118,7 +151,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="totalMathMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Total Math Marks"
                                 placeholder="Total Math Marks"
                                 className="login-input"
@@ -129,7 +162,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="englishMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Student English Marks"
                                 placeholder="Student English Marks"
                                 className="login-input"
@@ -138,7 +171,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="totalEnglishMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Total English Marks"
                                 placeholder="Total English Marks"
                                 className="login-input"
@@ -148,9 +181,30 @@ const RegisterMarks = ({ showFormView }) => {
                         </div>
                         <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
                             <Input
+                                name="kinyarwandaMarks"
+                                inputHandler={inputHandler}
+                                type="text"
+                                labelName="Student Kinyarwanda Marks"
+                                placeholder="Student Kinyarwanda Marks"
+                                className="login-input"
+                                required
+                            />
+                            <Input
+                                name="totalKinyarwandaMarks"
+                                inputHandler={inputHandler}
+                                type="text"
+                                labelName="Total Kinyarwanda Marks"
+                                placeholder="Total Kinyarwanda Marks"
+                                className="login-input"
+                                required
+                            />
+
+                        </div>
+                        <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
+                            <Input
                                 name="socialMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Student Social Marks"
                                 placeholder="Student Social Marks"
                                 className="login-input"
@@ -159,7 +213,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="totalSocialMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Total Social Marks"
                                 placeholder="Total Social Marks"
                                 className="login-input"
@@ -172,16 +226,16 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="frenchMarks"
                                 inputHandler={inputHandler}
-                                type="number"
-                                labelName="French Marks"
-                                placeholder="French Marks"
+                                type="text"
+                                labelName="Student French Marks"
+                                placeholder="Student French Marks"
                                 className="login-input"
                                 required
                             />
                             <Input
                                 name="totalFrenchMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Total French Marks"
                                 placeholder="Total French Marks"
                                 className="login-input"
@@ -195,7 +249,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="totalMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Student Total Marks"
                                 placeholder="Student Total
                                  Marks"
@@ -206,7 +260,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="totalFullMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Total Full Marks"
                                 placeholder="Total Full Marks"
                                 className="login-input"
@@ -221,7 +275,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="averageMarks"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Average Marks"
                                 placeholder="Average Marks"
                                 className="login-input"
@@ -231,7 +285,7 @@ const RegisterMarks = ({ showFormView }) => {
                             <Input
                                 name="percentage"
                                 inputHandler={inputHandler}
-                                type="number"
+                                type="text"
                                 labelName="Percentage"
                                 placeholder="Percentage"
                                 className="login-input"

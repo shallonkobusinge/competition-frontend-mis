@@ -13,12 +13,41 @@ export async function getAllStudents() {
                     value: student?._id
                 }
                 students.push(data)
-                return students
             }
+            return students
             console.log(response)
         }).catch((error) => {
 
         })
     return students
 
+}
+
+
+export async function getLoggedInUser() {
+
+    let students = []
+    await axios.get(`${BASE_URL}/auth/current-user`, { headers: authHeader() })
+        .then((response) => {
+            console.log(response)
+
+        }).catch((error) => {
+
+        })
+    return students
+
+}
+
+export async function getOneStudent(id) {
+    let studentInfo = []
+    await axios.get(`${BASE_URL}/students/${id}`, { headers: authHeader() })
+        .then((response) => {
+            studentInfo = response?.data?.data
+            return studentInfo
+        })
+        .catch((error) => {
+
+        })
+
+    return studentInfo
 }

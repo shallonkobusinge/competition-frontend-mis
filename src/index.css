@@ -1,13 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: "Quicksand",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+p {
+  font-size: 1.1rem;
+}
+.app-background{
+  background-color: #202323;
+}
+.app-color{
+  color: #202323;
+}
+.login-form-container {
+    margin: 10rem;
+}
+.table-header .left .buttons {
+  background: #e5e5e5;
+  border-radius: 15px;
+}
+
+.table-header .left .buttons .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #868585;
+  margin: 0.8rem;
+}
+
+.tabs-container {
+    padding-top: 3rem 3rem 0 3rem;
+    border-bottom: 1px solid #C0C2C2;
+    padding: 3rem 3rem 0 3rem;
+    width: 87rem;
+    margin-left: 5rem;
+}
+.register-button{
+      width: 12rem;
+    height: 2.6rem;
+    background: #232020;
+    color: white;
+    border-radius: 6px;
+    margin-bottom: 2px;
+}
+.active{
+  border-bottom: 2px solid #232020;
+}
+
+.table-header .left .buttons button {
+  padding: 5px 25px;
+  color: #868585 !important;
+  background-color: #e5e5e5 !important;
+  font-weight: bold;
+  font-size: 14px;
+}
+.table-header .left .buttons button.active {
+  background: #1d5fad !important;
+  border-radius: 15px;
+  color: #fff !important;
+}
+
+.table-header .right input,
+.table-header .right select {
+  border: 1px solid #bab8b8;
+  box-sizing: border-box;
+  border-radius: 5px;
+  outline: none;
+  width: 150px;
+  height: 35px;
+  padding: 0.1rem 0.4rem;
+  color: #bab8b8;
+}
+
+.table-header .left input {
+  border: 1px solid #bab8b8;
+  box-sizing: border-box;
+  border-radius: 5px;
+  outline: none;
+  width: 180px;
+  height: 35px;
+  padding: 0.1rem 0.4rem;
+  color: #bab8b8;
+  background: #eaeaea;
+}
+.input-container-flow{
+      width: 37rem;
+}
+table.sm-transfers-table {
+  border-collapse: collapse;
+    min-width: 82%;
+    width: max-content;
+    margin-left: 10rem;
+    margin-top: 1rem;
+}
+
+.horizontal-scroll::-webkit-scrollbar,
+.sm-transfers-table-container::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+/* Track */
+.horizontal-scroll::-webkit-scrollbar-track,
+.sm-transfers-table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.horizontal-scroll::-webkit-scrollbar-thumb:horizontal,
+.sm-transfers-table-container::-webkit-scrollbar-thumb:horizontal {
+  background: #888;
+}
+
+/* Handle on hover */
+.horizontal-scroll::-webkit-scrollbar-thumb:horizontal:hover,
+.sm-transfers-table-container::-webkit-scrollbar-thumb:horizontal:hover {
+  background: #555;
+}
+
+table.sm-transfers-table th,
+table.sm-transfers-table td {
+  text-align: left;
+  padding: 10px 8px;
+  font-size: 13px;
+}
+table.sm-transfers-table th.center,
+table.sm-transfers-table td.center {
+  text-align: center;
+}
+
+table.sm-transfers-table img {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+table.sm-transfers-table tr:nth-child(even) {
+  background: rgba(156, 161, 167, 0.08);
+  width: 100%;
+  color: #9a9a9a;
+}
+
+table.sm-transfers-table tr:nth-child(odd) {
+  background: #f1f5fa;
+  border-radius: 10px;
+  width: 100%;
+  color: #9a9a9a;
+}
+
+table.sm-transfers-table tr.blue {
+  background: #f1f5fa;
+}
+
+table.sm-transfers-table .space {
+  height: 0.5rem;
+  width: 100%;
+  background-color: #fff;
+}
+table.sm-transfers-table th {
+  background: #f1f5fa;
+  color: #1d5fad;
+}
+
+table.sm-transfers-table th.red,
+table.sm-transfers-table td.red {
+  color: #ad1d1d;
+}
+
+@media screen and (max-width: 992px) {
+  table.sm-transfers-table {
+    width: max-content;
+    min-width: 100%;
+  }
+}
+
+
+
+.new-school-link {
+  background: #1d5fad;
+  border-radius: 3px;
+  color: #fff;
+  padding: 0.5rem
+    1.6rem;
+  font-weight: bold;
+  font-size: 15px;
+  width: 18rem;
+  height: 2.4rem;
 }

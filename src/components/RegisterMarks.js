@@ -80,7 +80,7 @@ const RegisterMarks = ({ showFormView }) => {
             setIstotalFullMakrsEmpty(true)
         }
         if (isTotalFullMarksEmpty === true && isTotalFullMarksEmpty === true) {
-            setmarksData({ ...marksData, "percentage": })
+            // setmarksData({ ...marksData, "percentage": })
 
         }
 

@@ -18,8 +18,7 @@ const RegisterMarks = ({ showFormView }) => {
         totalEnglishMarks: "",
         socialMarks: "",
         totalSocialMarks: "",
-        frenchMarks: "",
-        totalFrenchMarks: "",
+
         kinyarwandaMarks: "",
         totalKinyarwandaMarks: "",
         totalMarks: "",
@@ -29,6 +28,7 @@ const RegisterMarks = ({ showFormView }) => {
 
     };
 
+    // const frenchOption
 
     const [marksData, setmarksData] = useState(initialMarksObject);
     const [studentsOptions, setStudentsOptions] = useState([])

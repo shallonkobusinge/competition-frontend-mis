@@ -1,5 +1,6 @@
 import './App.css';
 import React from "react";
+import Login from './views/Login'
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,9 +8,8 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-// import Login from './views/Login'
-
-// import UsersPage from './views/usersPage';
+import SchoolEntry from './views/SchoolEntry'
+import StudentReportInfo from './components/StudentReportInfo';
 
 function PrivateRoute({ children, ...rest }) {
   return (
@@ -37,7 +37,7 @@ function PublicRoute({ children, ...rest }) {
         return !sessionStorage.getItem("token") ? (
           children
         ) : (
-          <Redirect to="/dashboard" />
+          <Redirect to="/" />
         );
       }}
     />
@@ -46,20 +46,22 @@ function PublicRoute({ children, ...rest }) {
 function App() {
 
   return (
-    <>
-      <h2 >Hello World</h2>
-    </>
-    // <Router>
-    //   <Switch>
-    //     <PrivateRoute exact path="/users" >
-    //       <UsersPage />
-    //     </PrivateRoute>
 
-    //     <PublicRoute exact path="/login">
-    //       <Login />
-    //     </PublicRoute>
-    //   </Switch>
-    // </Router>
+    <Router>
+      <Switch>
+
+
+        <PrivateRoute exact path="/">
+          <SchoolEntry />
+        </PrivateRoute>
+        <PublicRoute exact path="/login">
+          <Login />
+        </PublicRoute>
+        <PublicRoute exact path="/student-info">
+          <StudentReportInfo />
+        </PublicRoute>
+      </Switch>
+    </Router>
   );
 }
 

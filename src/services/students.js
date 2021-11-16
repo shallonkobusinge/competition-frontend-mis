@@ -6,9 +6,10 @@ export async function getAllStudents() {
     let students = []
     await axios.get(`${BASE_URL}/students`, { headers: authHeader() })
         .then((response) => {
+            console.log(response)
             for (let student of response?.data?.data) {
                 let data = {
-                    label: student?.name,
+                    label: `${student?.firstName}  ${student?.lastName}`,
                     value: student?._id
                 }
                 students.push(data)

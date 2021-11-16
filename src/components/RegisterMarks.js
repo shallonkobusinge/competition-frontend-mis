@@ -12,11 +12,17 @@ const RegisterMarks = ({ showFormView }) => {
     const initialMarksObject = {
         student: "",
         mathMarks: "",
+        totalMathMarks: "",
         englishMarks: "",
+        totalEnglishMarks: "",
         socialMarks: "",
+        totalSocialMarks: "",
         frenchMarks: "",
+        totalFrenchMarks: "",
         kinyarwandaMarks: "",
+        totalKinyarwandaMarks: "",
         totalMarks: "",
+        totalFullMarks: "",
         averageMarks: "",
         percentage: "",
 
@@ -25,11 +31,14 @@ const RegisterMarks = ({ showFormView }) => {
 
     const [marksData, setmarksData] = useState(initialMarksObject);
     const [studentsOptions, setStudentsOptions] = useState([])
+    const [isTotalMarksEmpty, setIstotalMakrsEmpty] = useState(false)
+    const [isTotalFullMarksEmpty, setIstotalFullMakrsEmpty] = useState(false)
 
     const loadData = async () => {
         return await getAllStudents()
     }
     React.useEffect(async () => {
+        console.log(await loadData())
         setStudentsOptions(await loadData())
     }
         , [])
@@ -45,10 +54,37 @@ const RegisterMarks = ({ showFormView }) => {
         setmarksData({ ...marksData, [name]: value })
     }
 
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const marksDataTotals = (parseInt(marksData?.englishMarks) + parseInt(marksData?.frenchMarks) +
+            parseInt(marksData?.kinyarwandaMarks) + parseInt(marksData?.socialMarks) + parseInt(marksData?.mathMarks))
+        console.log(marksData)
 
-        axios.post(`${BASE_URL}/marks`)
+        if (marksData?.englishMarks !== "" && marksData?.frenchMarks !== "" && marksData?.kinyarwandaMarks !== "" &&
+            marksData?.mathMarks !== "" && marksData?.socialMarks !== "") {
+            setmarksData({
+                ...marksData, "totalMarks": marksDataTotals
+            })
+            setmarksData({
+                ...marksData, "averageMarks": (marksDataTotals) / 5
+            })
+            setIstotalFullMakrsEmpty(true)
+        }
+        if (marksData?.totalEnglishMarks !== "" && marksData?.totalFrenchMarks !== "" && marksData?.totalKinyarwandaMarks !== ""
+            && marksData?.totalMathMarks !== "" && marksData?.totalSocialMarks !== "") {
+            setmarksData({
+                ...marksData, "totalFullMakrs": parseInt(marksData?.totalEnglishMarks) + parseInt(marksData?.totalFrenchMarks) +
+                    parseInt(marksData?.totalKinyarwandaMarks) + parseInt(marksData?.totalMathMarks) + parseInt(marksData?.totalSocialMarks)
+            });
+            setIstotalFullMakrsEmpty(true)
+        }
+        if (isTotalFullMarksEmpty === true && isTotalFullMarksEmpty === true) {
+            setmarksData({ ...marksData, "percentage": })
+
+        }
+
+        // axios.post(`${BASE_URL}/marks`)
 
     };
 
@@ -60,30 +96,31 @@ const RegisterMarks = ({ showFormView }) => {
 
             <form onSubmit={handleSubmit} noValidate>
 
-                <div className="schoolmanager-container w-full max-w-xs mx-auto">
+                <div className="schoolmanager-container w-full max-w-xs mx-auto mt-4">
                     <div className="grid grid-cols-6 grid-rows-2  gap-8">
-                        <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
+                        <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 ">
                             <Select
                                 options={studentsOptions}
                                 onChange={(payload) => selectHandler({ ...payload, name: "student" })}
                             />
                         </div>
                         <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
-                            <Input
-                                name="physicsMarks"
-                                inputHandler={inputHandler}
-                                type="number"
-                                labelName="Physics Marks"
-                                placeholder="Physics Marks"
-                                className="login-input"
-                                required
-                            />
+
                             <Input
                                 name="mathMarks"
                                 inputHandler={inputHandler}
                                 type="number"
-                                labelName="Math Marks"
+                                labelName="Student Math Marks"
                                 placeholder="Math Marks"
+                                className="login-input"
+                                required
+                            />
+                            <Input
+                                name="totalMathMarks"
+                                inputHandler={inputHandler}
+                                type="number"
+                                labelName="Total Math Marks"
+                                placeholder="Total Math Marks"
                                 className="login-input"
                                 required
                             />
@@ -93,20 +130,43 @@ const RegisterMarks = ({ showFormView }) => {
                                 name="englishMarks"
                                 inputHandler={inputHandler}
                                 type="number"
-                                labelName="English Marks"
-                                placeholder="English Marks"
+                                labelName="Student English Marks"
+                                placeholder="Student English Marks"
                                 className="login-input"
                                 required
                             />
                             <Input
-                                name="socialMarks"
+                                name="totalEnglishMarks"
                                 inputHandler={inputHandler}
                                 type="number"
-                                labelName="Social Marks"
-                                placeholder="Social Marks"
+                                labelName="Total English Marks"
+                                placeholder="Total English Marks"
                                 className="login-input"
                                 required
                             />
+
+                        </div>
+                        <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
+                            <Input
+                                name="socialMarks"
+                                inputHandler={inputHandler}
+                                type="number"
+                                labelName="Student Social Marks"
+                                placeholder="Student Social Marks"
+                                className="login-input"
+                                required
+                            />
+                            <Input
+                                name="totalSocialMarks"
+                                inputHandler={inputHandler}
+                                type="number"
+                                labelName="Total Social Marks"
+                                placeholder="Total Social Marks"
+                                className="login-input"
+                                required
+                            />
+
+
                         </div>
                         <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
                             <Input
@@ -119,26 +179,45 @@ const RegisterMarks = ({ showFormView }) => {
                                 required
                             />
                             <Input
-                                name="kinyarwandaMarks"
+                                name="totalFrenchMarks"
                                 inputHandler={inputHandler}
                                 type="number"
-                                labelName="Kinyarwanda Marks"
-                                placeholder="Kinyarwanda Marks"
+                                labelName="Total French Marks"
+                                placeholder="Total French Marks"
                                 className="login-input"
                                 required
                             />
+
+
                         </div>
+
                         <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
                             <Input
                                 name="totalMarks"
                                 inputHandler={inputHandler}
                                 type="number"
-                                labelName="Total Marks"
-                                placeholder="Total
+                                labelName="Student Total Marks"
+                                placeholder="Student Total
                                  Marks"
                                 className="login-input"
                                 required
+                                disabled
                             />
+                            <Input
+                                name="totalFullMarks"
+                                inputHandler={inputHandler}
+                                type="number"
+                                labelName="Total Full Marks"
+                                placeholder="Total Full Marks"
+                                className="login-input"
+                                required
+                                disabled
+                            />
+
+
+                        </div>
+
+                        <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1 flex w-96">
                             <Input
                                 name="averageMarks"
                                 inputHandler={inputHandler}
@@ -147,9 +226,8 @@ const RegisterMarks = ({ showFormView }) => {
                                 placeholder="Average Marks"
                                 className="login-input"
                                 required
+                                disabled
                             />
-                        </div>
-                        <div className="col-span-6 gap-6 sm:col-span-6 sm:row-span-1">
                             <Input
                                 name="percentage"
                                 inputHandler={inputHandler}
@@ -158,8 +236,13 @@ const RegisterMarks = ({ showFormView }) => {
                                 placeholder="Percentage"
                                 className="login-input"
                                 required
+                                disabled
                             />
+
                         </div>
+
+
+
                     </div>
                 </div>
                 <div className="mt-8 text-center">
